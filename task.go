@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -17,24 +16,20 @@ func getFileData(fileName string) string {
 }
 
 func main() {
-	var fFileName, sFileName, resFileName string
-	flag.StringVar(&fFileName, "fFileName", "", "Set first file name")
-	flag.StringVar(&sFileName, "sFileName", "", "Set second file name")
-	flag.StringVar(&resFileName, "resFileName", "", "Set result file name")
-	flag.Parse()
+	filesName := os.Args
 
 	data := "You have not specified files to read"
 
-	if fFileName != "" {
-		data = getFileData(fFileName)
+	if len(filesName) > 1 {
+		data = getFileData(filesName[1])
 	}
 
-	if sFileName != "" {
-		data = strings.Join([]string{data, getFileData(sFileName)}, "\n")
+	if len(filesName) > 2 {
+		data = strings.Join([]string{data, getFileData(filesName[2])}, "\n")
 	}
 
-	if resFileName != "" {
-		err := os.WriteFile(resFileName, []byte(data), 0777)
+	if len(filesName) > 3 {
+		err := os.WriteFile(filesName[3], []byte(data), 0777)
 		if err != nil {
 			log.Fatalf("Error writing to file: %v", err)
 		}
